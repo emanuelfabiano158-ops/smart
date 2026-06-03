@@ -1,0 +1,173 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}BSF Farming System - DUCE{% endblock %}
+
+{% block content %}
+
+<!-- HERO (like locksmith design) -->
+<section class="hero">
+    <div>
+        <h1>BSF Farming System</h1>
+        <p>Smart Waste-to-Protein System at DUCE</p>
+        <a href="/data" class="btn">View Live Dashboard</a>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section">
+    <h2>System Features</h2>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Waste Conversion</h3>
+            <p>Organic waste transformed into insect protein.</p>
+        </div>
+
+        <div class="card">
+            <h3>IoT Monitoring</h3>
+            <p>ESP32 sensors track environment conditions.</p>
+        </div>
+
+        <div class="card">
+            <h3>Sustainability</h3>
+            <p>Supports eco-friendly agriculture practices.</p>
+        </div>
+    </div>
+</section>
+
+<!-- LIVE DATA -->
+<section class="section live">
+    <h2>Live System Status</h2>
+    <p id="status">Loading data...</p>
+</section>
+
+<!-- ABOUT -->
+<section class="section">
+    <h2>About BSF Project</h2>
+    <p>
+        This project is developed at DUCE to promote sustainable waste management
+        using Black Soldier Fly larvae technology.
+    </p>
+</section>
+
+<!-- DEVELOPERS SECTION (CONVEYOR BELT CAROUSEL) -->
+<section class="section">
+    <h2>Development Team</h2>
+
+    <div class="dev-carousel">
+        <div class="dev-track">
+
+            <div class="dev-card">
+                <img src="{% static 'img/maria.jpg' %}" alt="Maria Medrad">
+                <p>Ms. Maria Medrad</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="{% static 'img/martin.jpg' %}" alt="Martin Hangali Lukas">
+                <p>Mr. Martin Hangali Lukas</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="{% static 'img/philipo.jpg' %}" alt="Philipo Elias Mageme">
+                <p>Mr. Philipo Elias Mageme</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="{% static 'img/esther.jpg' %}" alt="Esther John Mkumbwa">
+                <p>Ms. Esther John Mkumbwa</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="{% static 'img/amosi.jpg' %}" alt="Amosi Lukas Godiso">
+                <p>Mr. Amosi Lukas Godiso</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="{% static 'img/mhigi.jpg' %}" alt="Mhigi Dickson Said">
+                <p>Mr. Mhigi Dickson Said</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="{% static 'img/emanuel.jpg' %}" alt="Emanuel Fabiano Safari">
+                <p>Mr. Emanuel Fabiano Safari</p>
+            </div>
+
+            <!-- duplicate for smooth infinite loop -->
+            <div class="dev-card">
+                <img src="{% static 'img/maria.jpg' %}" alt="Maria Medrad">
+                <p>Ms. Maria Medrad</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block js_code %}
+<script>
+fetch('/api/status/')
+.then(res => res.json())
+.then(data => {
+    document.getElementById('status').innerText =
+        "Temperature: " + data.temperature +
+        "°C | Moisture: " + data.moisture + "%";
+})
+.catch(() => {
+    document.getElementById('status').innerText = "System offline";
+});
+</script>
+
+<style>
+/* =======================
+   DEV CAROUSEL STYLES
+======================= */
+
+.dev-carousel {
+    overflow: hidden;
+    width: 100%;
+    background: #ffffff;
+    padding: 20px 0;
+    border-radius: 12px;
+}
+
+.dev-track {
+    display: flex;
+    gap: 30px;
+    width: max-content;
+    animation: scroll 25s linear infinite;
+}
+
+.dev-card {
+    min-width: 180px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.dev-card img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0864Af;
+}
+
+.dev-card p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #38574d;
+    font-weight: 500;
+}
+
+/* Conveyor belt animation */
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+</style>
+{% endblock %}

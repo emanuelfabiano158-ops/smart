@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}Live Water Chart - BSF System{% endblock %}
+
+{% block content %}
+
+<h2>Live Water Level Monitoring</h2>
+
+<canvas id="waterChart"></canvas>
+
+{% endblock %}
+
+
+{% block js_code %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('waterChart').getContext('2d');
+
+let chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Water Level (cm)',
+            data: [],
+            borderColor: 'blue',
+            tension: 0.3
+        }]
+    }
+});
+
+// WebSocket connection (REAL-TIME DATA)
+const socket = new WebSocket("ws://127.0.0.1:8000/ws/water/");
+
+socket.onmessage = function(event) {
+    const data = JSON.parse(event.data);
+
+    chart.data.labels = data.labels;
+    chart.data.datasets[0].data = data.values;
+
+    chart.update();
+};
+
+socket.onerror = function() {
+    console.log("WebSocket error");
+};
+</script>
+
+{% endblock %}
